@@ -1,0 +1,29 @@
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# Compiled Java/Kotlin files
+*.class
+*.dex
+
+# Log and temporary files
+*.log
+*.tmp
+*.hprof
+
+# APK / AAB outputs
+*.apk
+*.ap_
+*.aab
