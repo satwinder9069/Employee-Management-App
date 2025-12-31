@@ -87,7 +87,7 @@ MainActivity.kt
 1. Clone the repository:
 ```
 git clone https://github.com/satwinder9069/Employee-Management-App.git
-cd employee-admin-app
+cd Employee-Management-App
 ```
 2. Open the project in Android Studio (latest stable version).
 3. ** 🔄 Sync Gradle**
