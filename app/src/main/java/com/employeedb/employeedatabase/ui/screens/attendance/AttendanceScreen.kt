@@ -1,4 +1,4 @@
-package com.employeedb.employeedatabase.ui.screens
+package com.employeedb.employeedatabase.ui.screens.attendance
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import com.employeedb.employeedatabase.ui.components.BottomNavigationBar
+import com.employeedb.employeedatabase.ui.components.common.BottomNavigationBar
 
 @Composable
 fun AttendanceScreen(navigation: NavHostController) {

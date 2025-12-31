@@ -1,4 +1,4 @@
-package com.employeedb.employeedatabase.ui.components
+package com.employeedb.employeedatabase.ui.components.common
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -37,7 +37,7 @@ fun BottomNavigationBar(navController: NavHostController) {
         )
         NavigationBarItem(
             selected = false,
-            onClick = {},
+            onClick = {navController.navigate(Screen.SettingsScreen.route)},
             icon = { Icon(Icons.Default.Settings, contentDescription = null) },
             label = { Text("Settings") }
         )

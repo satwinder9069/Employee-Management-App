@@ -1,11 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
-    kotlin("kapt")
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.dagger.hilt)
     alias(libs.plugins.ksp)
-    // Optional: Hilt
-    alias(libs.plugins.hilt.android) apply true
 }
 
 android {
@@ -41,16 +39,6 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.2" // Compose Compiler
-    }
-//    buildscript {
-//        dependencies {
-//            classpath("org.jetbrains.kotlin.plugin.compose:org.jetbrains.kotlin.plugin.compose.gradle.plugin:2.0.20")
-//        }
-//    }
-//    dependencies {
-//    }
 }
 
 dependencies {
@@ -75,10 +63,10 @@ dependencies {
     implementation(libs.retrofit.gson)
     implementation(libs.okhttp)
 
-    // Hilt (optional)
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
-    implementation(libs.hilt.navigation.compose)
+    // Hilt
+    implementation(libs.hilt)
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -88,5 +76,4 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation("com.squareup:javapoet:1.13.0")
 }

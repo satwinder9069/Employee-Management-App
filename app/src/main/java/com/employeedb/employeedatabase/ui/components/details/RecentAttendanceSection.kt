@@ -23,9 +23,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.employeedb.employeedatabase.R
+import com.employeedb.employeedatabase.model.Attendance
+import com.employeedb.employeedatabase.ui.utils.formatDate
 
 @Composable
-fun RecentAttendanceSection() {
+fun RecentAttendanceSection(
+    attendance: List<Attendance>
+) {
+
     Card(
         modifier = Modifier.fillMaxWidth().padding(16.dp),
         shape = RoundedCornerShape(14.dp),
@@ -47,48 +52,19 @@ fun RecentAttendanceSection() {
                 Text(
                     text = "Recent Attendance",
                     fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
                 )
             }
-            AttendanceRow(
-                date = "Dec 15, 2025",
-                inTime = "09:05 AM",
-                outTime = "06:15 PM",
-                total = "9h 10m",
-                status = "Present"
-            )
-
-            AttendanceRow(
-                date = "Dec 14, 2025",
-                inTime = "08:58 AM",
-                outTime = "06:05 PM",
-                total = "9h 7m",
-                status = "Present"
-            )
-
-            AttendanceRow(
-                date = "Dec 13, 2025",
-                inTime = "09:15 AM",
-                outTime = "06:00 PM",
-                total = "8h 45m",
-                status = "Late"
-            )
-
-            AttendanceRow(
-                date = "Dec 12, 2025",
-                inTime = "09:00 AM",
-                outTime = "06:10 PM",
-                total = "9h 10m",
-                status = "Present"
-            )
-
-            AttendanceRow(
-                date = "Dec 11, 2025",
-                inTime = "-",
-                outTime = "-",
-                total = "-",
-                status = "Leave"
-            )
+            attendance.forEach {
+                AttendanceRow(
+                    date = formatDate(it.date),
+                    inTime = it.inTime?: "-",
+                    outTime = it.outTime ?: "-",
+                    total = it.totalHours ?: "-",
+                    status = it.status.name
+                )
+            }
         }
     }
 }
@@ -131,9 +107,7 @@ fun AttendanceRow(
                 fontSize = 12.sp,
                 color = Color.Gray
             )
-
         }
-
         AttendanceStatusChip(status)
     }
 

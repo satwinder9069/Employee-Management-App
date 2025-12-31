@@ -1,17 +1,26 @@
 package com.employeedb.employeedatabase.navigation
 
 sealed class Screen(
-    val route: String,
-    val title: String,
+    val route: String
 ) {
-    data object DashboardScreen : Screen("dashboard", "Dashboard")
-    data object EmployeeListScreen : Screen("employee_list","Employees")
-    data object AddEmployee : Screen("add_employee", "Add Employee")
-    object UpdateEmployee : Screen("update_employee/{id}", "Update Employee") {
-        fun createRoute(id: Int): String = "update_employee/$id"
+    data object DashboardScreen : Screen("dashboard")
+
+    data object EmployeeListScreen : Screen("employee_list")
+
+    data object EmployeeForm : Screen("employee_form?id={id}") {
+        fun createRoute(id: Long? = null): String =
+            if (id == null) {
+                "employee_form"
+            } else {
+                "employee_form?id=$id"
+            }
     }
-    data object DetailScreen : Screen("detail/{id}", "DetailScreen") {
-        fun createRoute(id: Int) : String = "detail/$id"
+
+    data object DetailScreen : Screen("detail/{id}") {
+        fun createRoute(id: Long): String = "detail/$id"
     }
-    data object AttendanceScreen : Screen("attendance", "AttendanceScreen")
+
+    data object AttendanceScreen : Screen("attendance")
+
+    data object SettingsScreen: Screen("settings")
 }

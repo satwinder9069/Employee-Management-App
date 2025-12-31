@@ -21,7 +21,7 @@ import com.employeedb.employeedatabase.R
 @Composable
 fun EmployeeCountWithFilter(
     count: Int,
-    onFilterCheck: () -> Unit
+    onFilterCheck: (() -> Unit)? = null
 ) {
     Row(
         modifier = Modifier
@@ -35,8 +35,10 @@ fun EmployeeCountWithFilter(
             color = Color.Gray
         )
         Row (verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.clickable { onFilterCheck() }) {
-            Icon(
+            modifier = Modifier.clickable(enabled = onFilterCheck != null) {
+                onFilterCheck?.invoke()
+            }
+        ) {   Icon(
                 painter = painterResource(R.drawable.filter_list),
                 contentDescription = "Filter",
                 tint = Color(0xFF1E5EFF)

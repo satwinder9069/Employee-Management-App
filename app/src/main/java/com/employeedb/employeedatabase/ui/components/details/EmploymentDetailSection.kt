@@ -40,7 +40,8 @@ fun EmploymentDetails(
         ) {
             Text(
                 "Employment Details", fontWeight = FontWeight.Bold,
-                fontSize = 18.sp
+                fontSize = 18.sp,
+                color = Color.Black
             )
             Spacer(modifier = Modifier.height(12.dp))
             Row(modifier = Modifier.fillMaxWidth()) {
@@ -68,7 +69,6 @@ fun EmploymentDetails(
                     modifier = Modifier.weight(1f)
                 )
             }
-
         }
     }
 }
@@ -77,6 +77,6 @@ fun EmploymentDetails(
 fun DetailColumn(label: String, value: String, modifier: Modifier) {
     Column(modifier = modifier) {
         Text(label, color = Color.Gray, fontSize = 14.sp)
-        Text(value, fontWeight = FontWeight.Medium)
+        Text(value, fontWeight = FontWeight.Medium, color = Color.LightGray)
     }
 }

@@ -1,37 +1,20 @@
 package com.employeedb.employeedatabase.data.repository
 
-import com.employeedb.employeedatabase.data.local.EmployeeDao
 import com.employeedb.employeedatabase.model.Employee
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
-class EmployeeRepository @Inject constructor(
-    private val dao: EmployeeDao
-) {
-    fun getEmployees(): Flow<List<Employee>> = dao.getAllEmployees()
+interface EmployeeRepository {
+    fun getEmployees(): Flow<List<Employee>>
 
-    fun searchAndFilter(query: String, dept: String): Flow<List<Employee>> = dao.searchAndFilterEmp(query, dept)
+    fun getEmployeeById(id: Long) : Flow<Employee?>
 
-    suspend fun addEmp(emp: Employee) {
-        dao.addEmp(emp)
-    }
+    suspend fun addEmployee(employee: Employee)
 
-    suspend fun getEmpById(id: Int): Employee? {
-        return dao.getEmpById(id)
-    }
+    suspend fun updateEmployee(employee: Employee)
 
-    suspend fun updateEmp(emp: Employee) {
-        dao.updateEmp(emp)
-    }
+    suspend fun deleteEmployee(employee: Employee)
 
-    suspend fun deleteEmp(emp: Employee) {
-        dao.deleteEmp(emp)
-    }
-
-    suspend fun deleteEmpById(id: Int): Int? {
-        return dao.deleteEmpById(id)
-    }
-
+    fun searchAndFilter(query: String, dept: String): Flow<List<Employee>>
 
 
 }

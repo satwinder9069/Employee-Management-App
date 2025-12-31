@@ -1,4 +1,4 @@
-package com.employeedb.employeedatabase.ui.components
+package com.employeedb.employeedatabase.ui.components.common
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

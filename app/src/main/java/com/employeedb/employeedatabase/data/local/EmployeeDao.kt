@@ -18,7 +18,7 @@ interface EmployeeDao {
     fun getAllEmployees(): Flow<List<Employee>>
 
     @Query("SELECT * FROM employees where id = :id")
-    suspend fun getEmpById(id: Int): Employee?
+    fun getEmpById(id: Long): Flow<Employee?>
 
     @Update
     suspend fun updateEmp(emp: Employee)

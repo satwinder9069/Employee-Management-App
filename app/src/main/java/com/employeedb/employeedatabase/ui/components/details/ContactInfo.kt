@@ -1,7 +1,6 @@
 package com.employeedb.employeedatabase.ui.components.details
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -50,7 +49,8 @@ fun ContactInfo(
             Text(
                 text = "Contact Information",
                 fontWeight = FontWeight.Bold,
-                fontSize = 18.sp
+                fontSize = 18.sp,
+                color = Color.Black
             )
             Spacer(modifier = Modifier.height(12.dp))
             ContactItem(
@@ -110,10 +110,8 @@ fun ContactItem(
         }
         Spacer(modifier = Modifier.width(14.dp))
         Column {
-            Text(label, color = Color.Gray, fontSize = 12.sp)
-            Text(value, fontWeight = FontWeight.Medium)
+            Text(label, color = Color.DarkGray, fontSize = 12.sp)
+            Text(value, fontWeight = FontWeight.Medium, color = Color.Gray)
         }
     }
-
-
 }

@@ -64,8 +64,7 @@ fun AttendanceBar(
     progress: Float,
     color: Color
 ) {
-    Column(
-    ) {
+    Column {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween

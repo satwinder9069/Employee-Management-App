@@ -23,6 +23,8 @@ object DatabaseModule {
         ).build()
 
     @Provides
-    @Singleton
     fun provideEmployeeDao(db: AppDatabase): EmployeeDao = db.employeeDao()
+
+    @Provides
+    fun provideAttendanceDao(db: AppDatabase): AttendanceDao = db.attendanceDao()
 }
