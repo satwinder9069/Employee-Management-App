@@ -13,15 +13,24 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.employeedb.employeedatabase.data.local.AttendanceWithEmployee
+import com.employeedb.employeedatabase.model.Attendance
+import com.employeedb.employeedatabase.model.AttendanceStatus
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
-fun RecentActivities() {
+fun RecentActivities(
+    activities: List<AttendanceWithEmployee>
+) {
     Column(
         modifier = Modifier.padding(16.dp)
     ) {
@@ -31,20 +40,29 @@ fun RecentActivities() {
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(8.dp))
-        ActivityItem("SJ", "Sarah Johnson", "Checked in", "09:05 AM")
-        ActivityItem("PB", "Prince Bawa", "Leave approved", "08:45 AM")
-        ActivityItem("SM", "Sania Mehra", "Profile Updated", "09:05 AM")
-        ActivityItem("TK", "Taranjeet Kaur", "Checked out", "05:45 PM")
+        if(activities.isEmpty()) {
+            Text(
+                text = "No recent activities",
+                color = Color.Gray,
+                modifier = Modifier.padding(vertical = 16.dp)
+            )
+        } else {
+            activities.forEach { activity->
+                ActivityItem(attendance = activity)
+            }
+        }
     }
 }
 
 @Composable
 fun ActivityItem(
-    initials: String,
-    name: String,
-    action: String,
-    time: String
+    attendance: AttendanceWithEmployee
 ) {
+    val initials = attendance.employeeName
+        .split(" ")
+        .mapNotNull { it.firstOrNull()?.uppercase() }
+        .take(2)
+        .joinToString("")
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -58,7 +76,7 @@ fun ActivityItem(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                initials,
+                text = initials,
                 color = Color.White,
                 fontWeight = FontWeight.Bold
             )
@@ -67,9 +85,25 @@ fun ActivityItem(
         Column(
             modifier = Modifier.weight(1f)
         ) {
-            Text(name, fontWeight = FontWeight.Bold)
-            Text(action, fontSize = 12.sp, color = Color.Gray)
+            Text(attendance.employeeName, fontWeight = FontWeight.Bold)
+            Text(
+                when (attendance.attendance.status) {
+                    AttendanceStatus.PRESENT -> "Checked in"
+                    AttendanceStatus.LATE -> "Late arrival"
+                    AttendanceStatus.LEAVE -> "On leave"
+                },
+                fontSize = 12.sp,
+                color = Color.Gray
+            )
         }
-        Text(time, fontSize = 12.sp, color = Color.Gray)
+        Text(
+            attendance.attendance.inTime ?: formatTime(attendance.attendance.date),
+            fontSize = 12.sp,
+            color = Color.Gray
+        )
     }
+}
+private fun formatTime(dateInMillis: Long): String {
+    val sdf = SimpleDateFormat("hh:mm a", Locale.getDefault())
+    return sdf.format(Date(dateInMillis))
 }

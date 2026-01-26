@@ -24,9 +24,14 @@ import androidx.compose.ui.unit.sp
 import com.employeedb.employeedatabase.R
 
 @Composable
-fun AttendanceOverview() {
+fun AttendanceOverview(
+    weekProgress: Float,
+    monthProgress: Float
+) {
     Card(
-        modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth(),
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
@@ -44,16 +49,16 @@ fun AttendanceOverview() {
                     fontWeight = FontWeight.Bold
                 )
                 Icon(
-                   painter = painterResource(R.drawable.overview),
+                    painter = painterResource(R.drawable.overview),
                     contentDescription = null
                 )
             }
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            AttendanceBar("This week",0.92f, Color(0xFF1E5EFF))
+            AttendanceBar("This week", weekProgress, Color(0xFF1E5EFF))
             Spacer(modifier = Modifier.height(8.dp))
-            AttendanceBar("This Month",0.88f, Color(0xFF2ECC71))
+            AttendanceBar("This Month", monthProgress, Color(0xFF2ECC71))
         }
     }
 }

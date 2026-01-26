@@ -40,7 +40,6 @@ fun EmployeeScreen(
     navController: NavHostController
 ) {
     val state by viewModel.uiState.collectAsState()
-
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -57,7 +56,6 @@ fun EmployeeScreen(
         bottomBar = {
             BottomNavigationBar(navController)
         }
-
     ) { paddingValues ->
         when {
             state.isLoading -> {
@@ -105,7 +103,7 @@ fun EmployeeScreen(
                     )
 
                     EmployeeCountWithFilter(
-                        count = state.filteredEmployee.size,
+                        count = state.filteredEmployee.size
                     )
 
                     EmployeeList(

@@ -29,7 +29,11 @@ import com.employeedb.employeedatabase.R
 
 @Composable
 fun StatsSection(
-modifier: Modifier
+    totalEmployees: Int,
+    presentToday: Int,
+    onLeave: Int,
+    lateArrivals: Int,
+    modifier: Modifier
 ) {
     Column(modifier = modifier.padding(16.dp)) {
         Row(
@@ -37,16 +41,40 @@ modifier: Modifier
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(18.dp)
         ) {
-            StatCard("248", "Total Employees", painterResource(R.drawable.group), Color(0xFF1E5E5F),  modifier = Modifier.weight(1f))
-            StatCard("215", "Present Today", painterResource(R.drawable.person_check), Color(0xFF2ECC71),  modifier = Modifier.weight(1f))
+            StatCard(
+                totalEmployees.toString(),
+                "Total Employees",
+                painterResource(R.drawable.group),
+                Color(0xFF1E5E5F),
+                modifier = Modifier.weight(1f)
+            )
+            StatCard(
+                presentToday.toString(),
+                "Present Today",
+                painterResource(R.drawable.person_check),
+                Color(0xFF2ECC71),
+                modifier = Modifier.weight(1f)
+            )
         }
         Spacer(modifier = Modifier.height(18.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(18.dp)
         ) {
-            StatCard("18", "On Leave",painterResource(R.drawable.on_leave)  , Color(0xFFF39C12),modifier = Modifier.weight(1f))
-            StatCard("15", "Late Arrivals", painterResource(R.drawable.clock), Color(0xFFE74C3C),  modifier = Modifier.weight(1f))
+            StatCard(
+                onLeave.toString(),
+                "On Leave",
+                painterResource(R.drawable.on_leave),
+                Color(0xFFF39C12),
+                modifier = Modifier.weight(1f)
+            )
+            StatCard(
+                lateArrivals.toString(),
+                "Late Arrivals",
+                painterResource(R.drawable.clock),
+                Color(0xFFE74C3C),
+                modifier = Modifier.weight(1f)
+            )
         }
     }
 }
@@ -59,7 +87,7 @@ fun StatCard(
     iconColor: Color,
     modifier: Modifier
 ) {
-    Card (
+    Card(
         modifier = modifier.height(150.dp),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(4.dp)

@@ -21,8 +21,7 @@ import androidx.compose.ui.unit.sp
 fun EmploymentDetails(
     employeeId: String,
     joinDate: String,
-    department: String,
-    manager: String
+    department: String
 ) {
     Card(
         modifier = Modifier
@@ -30,7 +29,7 @@ fun EmploymentDetails(
             .padding(horizontal = 16.dp),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFFFFAFA)
+            containerColor = Color(0xFFFFFFFF)
         ),
         elevation = CardDefaults.cardElevation(4.dp)
 
@@ -61,11 +60,6 @@ fun EmploymentDetails(
                 DetailColumn(
                     label = "Department",
                     value = department,
-                    modifier = Modifier.weight(1f)
-                )
-                DetailColumn(
-                    label = "Manager",
-                    value = manager,
                     modifier = Modifier.weight(1f)
                 )
             }

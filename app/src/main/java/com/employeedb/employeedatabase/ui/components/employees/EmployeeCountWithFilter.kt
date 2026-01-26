@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.employeedb.employeedatabase.R
@@ -21,7 +22,6 @@ import com.employeedb.employeedatabase.R
 @Composable
 fun EmployeeCountWithFilter(
     count: Int,
-    onFilterCheck: (() -> Unit)? = null
 ) {
     Row(
         modifier = Modifier
@@ -32,24 +32,10 @@ fun EmployeeCountWithFilter(
     ) {
         Text(
             text = "$count employees",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Medium,
             color = Color.Gray
         )
-        Row (verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.clickable(enabled = onFilterCheck != null) {
-                onFilterCheck?.invoke()
-            }
-        ) {   Icon(
-                painter = painterResource(R.drawable.filter_list),
-                contentDescription = "Filter",
-                tint = Color(0xFF1E5EFF)
-            )
-            Spacer(modifier = Modifier.width(4.dp))
-            Text(
-                text = "Filter",
-                color = Color(0xFF1E5EFF),
-                fontSize = 14.sp
-            )
-        }
     }
 
 }

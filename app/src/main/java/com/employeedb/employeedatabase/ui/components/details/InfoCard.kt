@@ -29,7 +29,7 @@ import com.employeedb.employeedatabase.R
 fun InfoCardRow(
     attendancePercent: String,
     leavesTaken: String,
-    performance: String,
+    totalDays: String,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -54,10 +54,10 @@ fun InfoCardRow(
         )
 
         InfoCard(
-            icon = painterResource(R.drawable.performance_badge),
-            iconColor = Color(0xFFD9514F),
-            title = "Performance",
-            value = performance
+            icon = painterResource(R.drawable.description),
+            iconColor = Color(0xFF9C27B0),
+            title = "Total Days",
+            value = totalDays
         )
     }
 }

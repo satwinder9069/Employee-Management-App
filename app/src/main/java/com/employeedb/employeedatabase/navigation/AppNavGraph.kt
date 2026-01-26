@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -31,7 +32,11 @@ fun AppNavGraph(
         composable(
             route = Screen.DashboardScreen.route
         ) {
-            DashboardScreen(viewModel, navController = navController)
+            DashboardScreen(
+                viewModel = viewModel,
+                navController = navController,
+                dashboardViewModel = hiltViewModel()
+            )
         }
 
         composable(
@@ -70,13 +75,17 @@ fun AppNavGraph(
             arguments = listOf(navArgument("id") { type = NavType.LongType })
         ) { backstackEntry ->
             val employeeId = backstackEntry.arguments?.getLong("id") ?: return@composable
-            DetailScreen(navController = navController, employeeId = employeeId)
+            DetailScreen(
+                navController = navController,
+                employeeId = employeeId,
+                attendanceViewModel = hiltViewModel()
+            )
         }
 
         composable(
             route = Screen.AttendanceScreen.route
         ) {
-            AttendanceScreen(navController)
+            AttendanceScreen(navController, viewModel = hiltViewModel())
         }
 
         composable(

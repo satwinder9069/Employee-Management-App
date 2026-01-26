@@ -10,18 +10,24 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,6 +39,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.employeedb.employeedatabase.R
 import com.employeedb.employeedatabase.model.Attendance
+import com.employeedb.employeedatabase.model.AttendanceStatus
 import com.employeedb.employeedatabase.model.Employee
 import com.employeedb.employeedatabase.navigation.Screen
 import com.employeedb.employeedatabase.ui.components.details.ContactInfo
@@ -80,6 +87,25 @@ private fun DetailContent(
     employee: Employee,
     attendance: List<Attendance>
 ) {
+    val attendancePercent = remember(attendance) {
+        if (attendance.isEmpty()) "0%"
+        else {
+            val presentCount = attendance.count { it.status == AttendanceStatus.PRESENT }
+            val percentage = (presentCount.toFloat() / attendance.size * 100).toInt()
+            "$percentage"
+        }
+    }
+
+    val leavesTaken = remember(attendance) {
+        attendance.count { it.status == AttendanceStatus.LEAVE }.toString()
+    }
+
+    val totalWorkingDays = remember(attendance) {
+        attendance.size.toString()
+    }
+
+    var showComingSoon by remember { mutableStateOf(false) }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -112,8 +138,11 @@ private fun DetailContent(
                 .padding(padding)
         ) {
             item {
-                Box(modifier = Modifier.fillMaxWidth().fillMaxWidth()
-                    .height(150.dp)) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(160.dp)
+                ) {
                     EmployeeDetailHeader(
                         initials = employee.initials,
                         name = employee.name,
@@ -122,9 +151,9 @@ private fun DetailContent(
                         modifier = Modifier.height(140.dp)
                     )
                     InfoCardRow(
-                        attendancePercent = "96%",
-                        leavesTaken = "8",
-                        performance = "4.5",
+                        attendancePercent = attendancePercent,
+                        leavesTaken = leavesTaken,
+                        totalDays = totalWorkingDays,
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
                             .offset(y = 90.dp)
@@ -139,8 +168,7 @@ private fun DetailContent(
                 EmploymentDetails(
                     employeeId = employee.id.toString(),
                     joinDate = formatDate(employee.joinDate),
-                    department = employee.department,
-                    manager = "John Smith"
+                    department = employee.department
                 )
             }
             item {
@@ -160,16 +188,32 @@ private fun DetailContent(
                                 Screen.EmployeeForm.createRoute(employee.id)
                             )
                         },
-                        modifier = Modifier.weight(1f).height(50.dp)
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(50.dp)
                     ) {
                         Text("Edit Details")
                     }
 
-                    Button(
-                        onClick = {},
-                        modifier = Modifier.weight(1f).height(50.dp)
+                    OutlinedButton(
+                        onClick = { showComingSoon = true },
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(50.dp)
                     ) {
                         Text("Documents")
+                    }
+                    if (showComingSoon) {
+                        AlertDialog(
+                            onDismissRequest = { showComingSoon = false },
+                            title = { Text("Coming Soon") },
+                            text = { Text("Document management feature will be available soon.") },
+                            confirmButton = {
+                                TextButton(onClick = { showComingSoon = false }) {
+                                    Text("OK")
+                                }
+                            }
+                        )
                     }
                 }
             }

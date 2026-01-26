@@ -197,7 +197,7 @@ fun EmployeeFormScreen(
                     } else {
                         viewModel.updateEmp(employee)
                     }
-                    navController.navigate(Screen.EmployeeListScreen.route)
+                    navController.popBackStack()
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {

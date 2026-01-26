@@ -1,6 +1,7 @@
 package com.employeedb.employeedatabase.ui.components.employees
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,7 +35,8 @@ fun EmployeeItem(employee: Employee, navController: NavHostController) {
     Card(
         modifier = Modifier
             .padding(horizontal = 16.dp, vertical = 6.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable{navController.navigate(Screen.DetailScreen.createRoute(employee.id))},
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFFFEFFFF)),
         elevation = CardDefaults.cardElevation(2.dp)
