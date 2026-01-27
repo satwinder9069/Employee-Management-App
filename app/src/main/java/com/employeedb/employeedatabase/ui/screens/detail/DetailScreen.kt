@@ -24,6 +24,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -59,7 +60,7 @@ fun DetailScreen(
     empViewModel: EmployeeViewModel = hiltViewModel(),
     attendanceViewModel: AttendanceViewModel = hiltViewModel()
 ) {
-    val employee by empViewModel.getEmpById(employeeId).collectAsState(initial = null)
+    val employee by empViewModel.getEmpById(employeeId).collectAsState()
     val attendance by attendanceViewModel.getRecentAttendance(employeeId).collectAsState()
 
     if (employee == null) {
@@ -87,20 +88,22 @@ private fun DetailContent(
     employee: Employee,
     attendance: List<Attendance>
 ) {
-    val attendancePercent = remember(attendance) {
-        if (attendance.isEmpty()) "0%"
-        else {
-            val presentCount = attendance.count { it.status == AttendanceStatus.PRESENT }
-            val percentage = (presentCount.toFloat() / attendance.size * 100).toInt()
-            "$percentage"
+    val attendancePercent by remember {
+        derivedStateOf {
+            if (attendance.isEmpty()) "0%"
+            else {
+                val presentCount = attendance.count { it.status == AttendanceStatus.PRESENT }
+                val percentage = (presentCount.toFloat() / attendance.size * 100).toInt()
+                "$percentage%"
+            }
         }
     }
 
-    val leavesTaken = remember(attendance) {
+    val leavesTaken = remember {
         attendance.count { it.status == AttendanceStatus.LEAVE }.toString()
     }
 
-    val totalWorkingDays = remember(attendance) {
+    val totalWorkingDays = remember {
         attendance.size.toString()
     }
 
@@ -137,18 +140,18 @@ private fun DetailContent(
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            item {
+            item ("header") {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(160.dp)
+                        .height(240.dp)
                 ) {
                     EmployeeDetailHeader(
                         initials = employee.initials,
                         name = employee.name,
                         role = employee.role,
                         department = employee.department,
-                        modifier = Modifier.height(140.dp)
+                        modifier = Modifier.height(130.dp)
                     )
                     InfoCardRow(
                         attendancePercent = attendancePercent,
@@ -156,11 +159,9 @@ private fun DetailContent(
                         totalDays = totalWorkingDays,
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
-                            .offset(y = 90.dp)
                     )
                 }
             }
-            item { Spacer(modifier = Modifier.height(90.dp)) }
             item {
                 ContactInfo(email = employee.email)
             }
@@ -203,20 +204,21 @@ private fun DetailContent(
                     ) {
                         Text("Documents")
                     }
-                    if (showComingSoon) {
-                        AlertDialog(
-                            onDismissRequest = { showComingSoon = false },
-                            title = { Text("Coming Soon") },
-                            text = { Text("Document management feature will be available soon.") },
-                            confirmButton = {
-                                TextButton(onClick = { showComingSoon = false }) {
-                                    Text("OK")
-                                }
-                            }
-                        )
-                    }
+
                 }
             }
         }
+    }
+    if (showComingSoon) {
+        AlertDialog(
+            onDismissRequest = { showComingSoon = false },
+            title = { Text("Coming Soon") },
+            text = { Text("Document management feature will be available soon.") },
+            confirmButton = {
+                TextButton(onClick = { showComingSoon = false }) {
+                    Text("OK")
+                }
+            }
+        )
     }
 }
