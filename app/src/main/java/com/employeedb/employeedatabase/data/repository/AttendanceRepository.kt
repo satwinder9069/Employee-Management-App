@@ -1,7 +1,7 @@
 package com.employeedb.employeedatabase.data.repository
 
 import com.employeedb.employeedatabase.data.local.AttendanceWithEmployee
-import com.employeedb.employeedatabase.model.Attendance
+import com.employeedb.employeedatabase.data.model.Attendance
 import kotlinx.coroutines.flow.Flow
 
 interface AttendanceRepository {

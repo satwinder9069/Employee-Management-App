@@ -7,7 +7,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.employeedb.employeedatabase.model.Attendance
+import com.employeedb.employeedatabase.data.model.Attendance
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -23,7 +23,7 @@ interface AttendanceDao {
         date: Long
     ): Flow<Attendance?>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertAttendance(
         attendance: Attendance
     )

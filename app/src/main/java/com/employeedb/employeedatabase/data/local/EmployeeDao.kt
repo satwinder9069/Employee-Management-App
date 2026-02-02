@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.employeedb.employeedatabase.model.Employee
+import com.employeedb.employeedatabase.data.model.Employee
 import kotlinx.coroutines.flow.Flow
 
 @Dao

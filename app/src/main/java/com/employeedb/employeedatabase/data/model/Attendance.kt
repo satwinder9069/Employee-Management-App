@@ -1,11 +1,11 @@
-package com.employeedb.employeedatabase.model
+package com.employeedb.employeedatabase.data.model
 
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 
-@Entity(tableName = "attendance", indices = [Index("employeeId")])
+@Entity(tableName = "attendance", indices = [Index(value = ["employeeId", "date"], unique = true)])
 data class Attendance(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
