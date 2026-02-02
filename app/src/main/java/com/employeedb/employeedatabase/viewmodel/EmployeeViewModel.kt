@@ -3,13 +3,14 @@ package com.employeedb.employeedatabase.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.employeedb.employeedatabase.data.repository.EmployeeRepository
-import com.employeedb.employeedatabase.model.Employee
+import com.employeedb.employeedatabase.data.model.Employee
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,6 +23,7 @@ class EmployeeViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(EmployeeUiState())
     val uiState: StateFlow<EmployeeUiState> = _uiState
 
+    private val employeeCache = mutableMapOf<Long, StateFlow<Employee?>>()
     init {
         loadEmployees()
     }
@@ -72,7 +74,16 @@ class EmployeeViewModel @Inject constructor(
             }
     }
 
-    fun getEmpById(id: Long): Flow<Employee?> = repo.getEmployeeById(id)
+    fun getEmpById(id: Long): StateFlow<Employee?> {
+        return employeeCache.getOrPut(id) {
+            repo.getEmployeeById(id)
+                .stateIn(
+                    scope = viewModelScope,
+                    started = SharingStarted.WhileSubscribed(5_000),
+                    initialValue = null
+                )
+        }
+    }
 
     fun addEmp(emp: Employee) {
         viewModelScope.launch {

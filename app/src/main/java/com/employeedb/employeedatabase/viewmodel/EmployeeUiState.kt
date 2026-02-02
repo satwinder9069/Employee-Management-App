@@ -1,6 +1,6 @@
 package com.employeedb.employeedatabase.viewmodel
 
-import com.employeedb.employeedatabase.model.Employee
+import com.employeedb.employeedatabase.data.model.Employee
 
 data class EmployeeUiState(
     val isLoading: Boolean = false,

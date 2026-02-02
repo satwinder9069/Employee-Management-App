@@ -1,6 +1,6 @@
 package com.employeedb.employeedatabase.data.repository
 
-import com.employeedb.employeedatabase.model.Employee
+import com.employeedb.employeedatabase.data.model.Employee
 import kotlinx.coroutines.flow.Flow
 
 interface EmployeeRepository {

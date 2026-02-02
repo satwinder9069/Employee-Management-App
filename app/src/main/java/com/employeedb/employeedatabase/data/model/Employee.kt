@@ -1,4 +1,4 @@
-package com.employeedb.employeedatabase.model
+package com.employeedb.employeedatabase.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

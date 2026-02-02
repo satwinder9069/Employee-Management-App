@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.employeedb.employeedatabase.data.repository.AttendanceRepository
 import com.employeedb.employeedatabase.data.repository.EmployeeRepository
-import com.employeedb.employeedatabase.model.AttendanceStatus
+import com.employeedb.employeedatabase.data.model.AttendanceStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
