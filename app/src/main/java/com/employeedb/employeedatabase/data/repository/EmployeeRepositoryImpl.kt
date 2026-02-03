@@ -26,4 +26,7 @@ class EmployeeRepositoryImpl @Inject constructor(
 
     override fun searchAndFilter(query: String, dept: String): Flow<List<Employee>> = employeeDao.searchAndFilterEmp(query, dept)
 
+    override suspend fun isEmailDuplicate(email: String, excludeId: Long): Boolean {
+        return employeeDao.isEmailExists(email, excludeId) > 0
+    }
 }

@@ -16,5 +16,7 @@ interface EmployeeRepository {
 
     fun searchAndFilter(query: String, dept: String): Flow<List<Employee>>
 
+    // validation
+    suspend fun isEmailDuplicate(email: String, excludeId: Long = 0): Boolean
 
 }
