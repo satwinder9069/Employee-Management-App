@@ -7,7 +7,7 @@ import com.employeedb.employeedatabase.data.model.Attendance
 import com.employeedb.employeedatabase.data.model.AttendanceConverters
 import com.employeedb.employeedatabase.data.model.Employee
 
-@Database(entities = [Employee::class, Attendance::class], version = 5, exportSchema = false)
+@Database(entities = [Employee::class, Attendance::class], version = 6, exportSchema = false)
 @TypeConverters(AttendanceConverters::class)
 abstract class AppDatabase : RoomDatabase() {
 
