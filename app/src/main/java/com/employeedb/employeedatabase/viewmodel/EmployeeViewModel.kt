@@ -5,9 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.employeedb.employeedatabase.data.repository.EmployeeRepository
 import com.employeedb.employeedatabase.data.model.Employee
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
@@ -23,9 +25,20 @@ class EmployeeViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(EmployeeUiState())
     val uiState: StateFlow<EmployeeUiState> = _uiState
 
+    private val _emailError = MutableStateFlow<String?>(null)
+    val emailError : StateFlow<String?> = _emailError
     private val employeeCache = mutableMapOf<Long, StateFlow<Employee?>>()
+
+    private val _uiEvent = MutableSharedFlow<UiEvent>()
+    val uiEvent = _uiEvent.asSharedFlow()
+
     init {
         loadEmployees()
+    }
+
+    sealed class UiEvent() {
+        object EmployeeSaved : UiEvent()
+        data class ShowError(val message: String): UiEvent()
     }
 
     private fun loadEmployees() {
@@ -87,12 +100,24 @@ class EmployeeViewModel @Inject constructor(
 
     fun addEmp(emp: Employee) {
         viewModelScope.launch {
+            if  (repo.isEmailDuplicate(emp.email)) {
+                _emailError.value = "Email already exists"
+                _uiEvent.emit(UiEvent.ShowError("Email already exists"))
+                return@launch
+            }
+            _emailError.value = null
             repo.addEmployee(emp)
         }
     }
 
     fun updateEmp(emp: Employee) {
         viewModelScope.launch {
+            if (repo.isEmailDuplicate(emp.email, emp.id)) {
+                _emailError.value = "Email already exists"
+                _uiEvent.emit(UiEvent.ShowError("Email already exists"))
+                return@launch
+            }
+            _emailError.value = null
             repo.updateEmployee(emp)
         }
     }
@@ -101,6 +126,10 @@ class EmployeeViewModel @Inject constructor(
         viewModelScope.launch {
             repo.deleteEmployee(emp)
         }
+    }
+
+    fun clearEmailError() {
+        _emailError.value = null
     }
 
     fun onSearchQueryChange(query: String) {
@@ -126,6 +155,5 @@ class EmployeeViewModel @Inject constructor(
                 )
             )
         }
-
     }
 }
