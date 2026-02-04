@@ -1,6 +1,7 @@
 # 📱 Android Employee Management System
 
 A modern Android application for comprehensive employee lifecycle management, attendance tracking, and organizational analytics.
+
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.0.0-purple.svg)](https://kotlinlang.org)
 [![Android](https://img.shields.io/badge/Android-24%2B-green.svg)](https://android.com)
 [![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-blue.svg)](https://developer.android.com/jetpack/compose)
