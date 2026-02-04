@@ -1,7 +1,7 @@
 # 📱 Android Employee Management System
 
 A modern Android application for comprehensive employee lifecycle management, attendance tracking, and organizational analytics.
-[![Kotlin](https://img.shields.io/badge/Kotlin-1.9.21-purple.svg)](https://kotlinlang.org)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.0.0-purple.svg)](https://kotlinlang.org)
 [![Android](https://img.shields.io/badge/Android-24%2B-green.svg)](https://android.com)
 [![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-blue.svg)](https://developer.android.com/jetpack/compose)
 [![Firebase](https://img.shields.io/badge/Firebase-Latest-orange.svg)](https://firebase.google.com)
@@ -98,8 +98,8 @@ app/
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/satwinder9069/employee-management-system.git
-cd employee-management-system
+git clone https://github.com/satwinder9069/android-employee-management.git
+cd android-employee-management
 ```
 
 2. **Open in Android Studio**
@@ -142,20 +142,26 @@ cd employee-management-system
 ### State Management
 ```kotlin
 // ViewModel
-private val _employeeState = MutableStateFlow(UIState.Idle)
-val employeeState = _employeeState.asStateFlow()
+private val _uiState = MutableStateFlow(EmployeeUiState())
+val uiState: StateFlow<EmployeeUiState> = _uiState
 
 // UI
-val state by viewModel.employeeState.collectAsState()
+val state by viewModel.uiState.collectAsState()
 ```
 
-### Navigation Flow
+### Navigation Flow:
 ```
-Login → Dashboard → [Employees, Attendance, Settings]
-                ↓
-            Employee Form
-                ↓
-          Employee Detail
+      Login / SignUp
+           ↓
+   ├── Dashboard
+   ├── Employees
+   │     ├── Employee Form (Add / Edit)
+   │     └── Employee Detail
+   │
+   ├── Attendance
+   │     └── Mark / View Attendance
+   │
+   └── Settings
 ```
 
 ## 🧪 Testing
