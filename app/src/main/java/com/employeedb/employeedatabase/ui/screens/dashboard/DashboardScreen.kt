@@ -65,8 +65,7 @@ fun DashboardScreen(
 
                 HeaderSection(
                     modifier = Modifier
-                        .height(150.dp),
-                    onSignOut = { onSignOut() }
+                        .height(150.dp)
                 )
                 StatsSection(
                     totalEmployees = totalEmployees,
@@ -87,7 +86,7 @@ fun DashboardScreen(
             RecentActivities(
                 activities = recentActivities
             )
-            UpcomingLeaves()
+//            UpcomingLeaves()
         }
     }
 }

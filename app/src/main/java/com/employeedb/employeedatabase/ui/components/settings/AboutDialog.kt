@@ -37,7 +37,7 @@ fun AboutDialog(
                 Text(text = "An admin app for managing employees and tracking attendance.", fontSize = 16.sp)
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    "Built with Jetpack Compose, MVVM, Room, and Hilt.",
+                    "Built with Jetpack Compose, MVVM, Room, and Hilt",
                     fontSize = 14.sp,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant

@@ -1,5 +1,6 @@
 package com.employeedb.employeedatabase.ui.screens.employee
 
+import android.util.Patterns.EMAIL_ADDRESS
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,15 +10,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -32,8 +35,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -56,6 +59,7 @@ fun EmployeeFormScreen(
     viewModel: EmployeeViewModel = hiltViewModel()
 ) {
     var formState by remember { mutableStateOf(EmployeeFormState()) }
+
     val employee by remember(employeeId) {
         if (employeeId != null)
             viewModel.getEmpById(employeeId)
@@ -65,12 +69,9 @@ fun EmployeeFormScreen(
     }.collectAsState(initial = null)
 
     val datePicker = rememberDatePickerState(
-        initialSelectedDateMillis = employee?.joinDate
+        initialSelectedDateMillis = System.currentTimeMillis()
     )
-
     var showDatePicker by remember { mutableStateOf(false) }
-
-
     val emailError by viewModel.emailError.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
@@ -84,21 +85,19 @@ fun EmployeeFormScreen(
                 department = it.department,
                 joinDate = formatDate(it.joinDate)
             )
+            datePicker.selectedDateMillis = it.joinDate
         }
     }
 
-    LaunchedEffect(viewModel.uiEvent) {
+    LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event ->
             when (event) {
-                is EmployeeViewModel.UiEvent.EmployeeSaved -> {
-                    navController.popBackStack()
-                }
-
                 is EmployeeViewModel.UiEvent.ShowError -> {
                     scope.launch {
                         snackbarHostState.showSnackbar(event.message)
                     }
                 }
+                else -> {}
             }
         }
     }
@@ -126,52 +125,63 @@ fun EmployeeFormScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
         ) {
+            // Name
             OutlinedTextField(
                 value = formState.name,
                 onValueChange = {
-                    formState = formState.copy(name = it)
+                    formState = formState.copy(name = it, error = null)
                 },
                 label = { Text("Name") },
                 modifier = Modifier.fillMaxWidth()
             )
 
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // Email
             OutlinedTextField(
                 value = formState.email,
                 onValueChange = {
-                    formState = formState.copy(email = it)
+                    formState = formState.copy(email = it ,  error = null)
 
                     if (emailError != null) viewModel.clearEmailError()
                 },
                 label = { Text("Email") },
                 isError = emailError != null,
-                supportingText = {
-                    emailError?.let {
-                        Text(it, color = Color.Red)
+                supportingText = if (emailError != null) {
+                    {
+                        Text(emailError!!, color = MaterialTheme.colorScheme.error)
                     }
-                },
+                } else null,
                 modifier = Modifier.fillMaxWidth()
             )
 
+            Spacer(modifier = Modifier.height(12.dp))
+            // Role
             OutlinedTextField(
                 value = formState.role,
                 onValueChange = {
-                    formState = formState.copy(role = it)
+                    formState = formState.copy(role = it,  error = null)
                 },
                 label = { Text("Role") },
                 modifier = Modifier.fillMaxWidth()
             )
 
+            Spacer(modifier = Modifier.height(12.dp))
+            // Department
             OutlinedTextField(
                 value = formState.department,
                 onValueChange = {
-                    formState = formState.copy(department = it)
+                    formState = formState.copy(department = it,  error = null)
                 },
                 label = { Text("Department") },
                 modifier = Modifier.fillMaxWidth()
             )
+            Spacer(modifier = Modifier.height(12.dp))
 
             Box(
                 modifier = Modifier
@@ -199,12 +209,18 @@ fun EmployeeFormScreen(
                         TextButton(onClick = {
                             datePicker.selectedDateMillis?.let { millis ->
                                 formState = formState.copy(
-                                    joinDate = formatDate(millis)
+                                    joinDate = formatDate(millis),
+                                    error = null
                                 )
                             }
                             showDatePicker = false
                         }) {
                             Text(text = "OK")
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = { showDatePicker = false }) {
+                            Text(text = "Cancel")
                         }
                     }
                 ) {
@@ -213,6 +229,15 @@ fun EmployeeFormScreen(
             }
 
             Spacer(modifier = Modifier.height(16.dp))
+
+            formState.error?.let {
+                Text(
+                    text = it,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+            }
 
             Button(
                 onClick = {
@@ -224,20 +249,27 @@ fun EmployeeFormScreen(
 
                     val employee = Employee(
                         id = employeeId ?: 0L,
-                        name = formState.name,
-                        email = formState.email,
-                        role = formState.role,
-                        department = formState.department,
+                        name = formState.name.trim(),
+                        email = formState.email.trim(),
+                        role = formState.role.trim(),
+                        department = formState.department.trim(),
                         joinDate = parseDate(formState.joinDate)
                     )
+                    scope.launch {
+                        if (employeeId == null) {
+                            viewModel.addEmp(employee)
+                        } else {
+                            viewModel.updateEmp(employee)
+                        }
 
-                    if (employeeId == null) {
-                        viewModel.addEmp(employee)
-                    } else {
-                        viewModel.updateEmp(employee)
+                        delay(100)
+
+                        if(viewModel.emailError.value == null){
+                            navController.popBackStack()
+                        }
                     }
                 },
-                enabled = emailError == null && validateForm(formState) == null,
+
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
@@ -248,7 +280,11 @@ fun EmployeeFormScreen(
                 )
             }
             formState.error?.let {
-                Text(text = it, color = Color.Red)
+                Text(
+                    text = it,
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
             }
         }
     }
@@ -257,7 +293,11 @@ fun EmployeeFormScreen(
 fun validateForm(state: EmployeeFormState): String? {
     return when {
         state.name.isBlank() -> "Name is required"
+        state.name.trim().length < 3 -> "Name must be at least 3 characters"
         state.email.isBlank() -> "Email is required"
+        !EMAIL_ADDRESS.matcher(state.email).matches() ->
+            "Invalid email format"
+        state.role.isBlank() -> "Role is required"
         state.department.isBlank() -> "Department is required"
         state.joinDate.isBlank() -> "Join date is required"
         else -> null

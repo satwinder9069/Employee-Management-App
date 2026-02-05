@@ -33,7 +33,6 @@ fun BottomNavigationBar(navController: NavHostController) {
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
         tonalElevation = 4.dp,
         modifier = Modifier
-            .height(90.dp)
             .clip(shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
     ) {
 

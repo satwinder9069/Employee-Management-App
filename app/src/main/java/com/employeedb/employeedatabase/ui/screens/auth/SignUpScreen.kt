@@ -1,5 +1,6 @@
 package com.employeedb.employeedatabase.ui.screens.auth
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,6 +20,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -108,9 +110,10 @@ fun SignUpScreen(
                 .padding(padding)
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             Text(
                 text = "Join Employee Management",
@@ -125,7 +128,7 @@ fun SignUpScreen(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             // Display name field
             OutlinedTextField(
@@ -146,7 +149,7 @@ fun SignUpScreen(
                 enabled = authState !is AuthResult.Loading
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             // Email Field
             OutlinedTextField(
@@ -167,6 +170,8 @@ fun SignUpScreen(
                 modifier = Modifier.fillMaxWidth(),
                 enabled = authState !is AuthResult.Loading
             )
+
+            Spacer(modifier = Modifier.height(8.dp))
 
             //Password Field
             OutlinedTextField(
@@ -210,7 +215,7 @@ fun SignUpScreen(
                 } else null
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             // confirm password field
             OutlinedTextField(
@@ -260,7 +265,7 @@ fun SignUpScreen(
 
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             // Sign Up Button
             Button(
@@ -270,7 +275,8 @@ fun SignUpScreen(
                     }
                 },
                 modifier = Modifier.fillMaxWidth().height(50.dp),
-                enabled = authState !is AuthResult.Loading && formValid
+                enabled = authState !is AuthResult.Loading && formValid,
+                elevation = ButtonDefaults.buttonElevation(4.dp)
             ) {
                 if(authState is AuthResult.Loading) {
                     CircularProgressIndicator(

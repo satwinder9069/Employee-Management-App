@@ -114,7 +114,7 @@ fun SettingsScreen(
                         .fillMaxWidth()
                         .padding(20.dp),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Box(
                         modifier = Modifier
@@ -148,8 +148,6 @@ fun SettingsScreen(
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
-
-                        Spacer(modifier = Modifier.height(8.dp))
 
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
@@ -190,7 +188,7 @@ fun SettingsScreen(
                                 ) {
                                     Text(
                                         text = "Verify Email",
-                                        style = MaterialTheme.typography.labelSmall,
+                                        style = MaterialTheme.typography.labelMedium,
                                         fontWeight = FontWeight.Medium
                                     )
                                 }
@@ -199,7 +197,6 @@ fun SettingsScreen(
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(8.dp))
 
             SettingsSection(
                 title = "Profile"
@@ -220,6 +217,8 @@ fun SettingsScreen(
                     onClick = { /* TODO: Navigate to change password */ }
                 )
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             SettingsSection(
                 title = "App Settings"

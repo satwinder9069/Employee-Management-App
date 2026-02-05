@@ -28,7 +28,7 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-fun HeaderSection(modifier: Modifier, onSignOut: () -> Unit = {}) {
+fun HeaderSection(modifier: Modifier) {
     val formattedDate = remember {
         SimpleDateFormat(
             "EEEE, MMMM dd, yyyy",
@@ -62,20 +62,20 @@ fun HeaderSection(modifier: Modifier, onSignOut: () -> Unit = {}) {
                     fontSize = 14.sp
                 )
             }
-            OutlinedIconButton(
-                onClick = { onSignOut() },
-                border = BorderStroke(1.dp,Color.White.copy(alpha = 0.5f)),
-                modifier = Modifier.size(40.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.Logout,
-                    contentDescription = "Sign Out",
-                    tint = Color.White,
-                    modifier = Modifier.size(22.dp)
-
-                )
-
-            }
+//            OutlinedIconButton(
+//                onClick = { onSignOut() },
+//                border = BorderStroke(1.dp,Color.White.copy(alpha = 0.5f)),
+//                modifier = Modifier.size(40.dp)
+//            ) {
+//                Icon(
+//                    imageVector = Icons.AutoMirrored.Filled.Logout,
+//                    contentDescription = "Sign Out",
+//                    tint = Color.White,
+//                    modifier = Modifier.size(22.dp)
+//
+//                )
+//
+//            }
         }
 
     }

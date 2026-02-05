@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -183,8 +184,6 @@ fun LoginScreen(
                 enabled = authState !is AuthResult.Loading
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
-
             // Forgot password
             TextButton(
                 onClick = { showForgotPasswordDialog = true},
@@ -193,7 +192,7 @@ fun LoginScreen(
                 Text("Forgot Password")
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             // Login button
             Button(
@@ -203,7 +202,8 @@ fun LoginScreen(
                     }
                 },
                 modifier = Modifier.fillMaxWidth().height(50.dp),
-                enabled = authState !is AuthResult.Loading && email.isNotBlank() && password.isNotBlank()
+                enabled = authState !is AuthResult.Loading && email.isNotBlank() && password.isNotBlank(),
+                elevation = ButtonDefaults.buttonElevation(4.dp, pressedElevation = 4.dp)
             ) {
                 if(authState is AuthResult.Loading) {
                     CircularProgressIndicator(
